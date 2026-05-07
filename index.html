@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boomerang vs. Sales Navigator</title>
+<meta name="description" content="Sales Navigator is a database. Boomerang is an agent. They're complementary — but the agent does everything Sales Nav was never built to do.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#fff;--bg-soft:#fafafa;--bg-card:#f6f6f4;--bg-dark:#0a0a0a;--bg-dark-2:#131313;
+  --ink:#0a0a0a;--ink-2:#1f1f1f;--ink-mute:#5c5c5c;--ink-faint:#8a8a8a;
+  --line:#ececec;--line-strong:#d4d4d4;
+  --accent:#ff4d1f;--accent-soft:#fff1ec;--green:#00b86b;--blue:#2a6cf4;
+  --serif:'Instrument Serif','Times New Roman',serif;
+  --sans:'Geist',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SF Mono',monospace;
+  --max:1200px;--read:720px;--gutter:clamp(20px,4vw,40px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","cv11";line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+img{max-width:100%;height:auto;display:block}
+.container{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+
+/* NAV */
+nav.top{position:sticky;top:0;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);z-index:50}
+nav.top .row{height:60px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;letter-spacing:-0.01em}
+.brand-logo{height:28px;width:auto;display:block}
+nav.top ul{display:flex;list-style:none;gap:28px;font-size:14px;color:var(--ink-mute)}
+nav.top ul a:hover{color:var(--ink)}
+nav.top ul a.nav-active{color:var(--ink);font-weight:500}
+nav.top .cta-row{display:flex;align-items:center;gap:12px;font-size:14px}
+@media (max-width:880px){nav.top ul{display:none}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:500;transition:all .15s ease;line-height:1;white-space:nowrap}
+.btn-ghost{color:var(--ink)}.btn-ghost:hover{background:var(--bg-card)}
+.btn-primary{background:var(--ink);color:white}.btn-primary:hover{background:var(--accent)}
+.btn-outline{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}.btn-outline:hover{border-color:var(--ink)}
+.btn-lg{height:44px;padding:0 20px;font-size:15px;border-radius:10px}
+.btn-xl{height:52px;padding:0 26px;font-size:16px;border-radius:12px}
+
+/* COMMON */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-mute);padding:6px 12px;border:1px solid var(--line);border-radius:100px;background:var(--bg-soft)}
+.eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.section-eyebrow{font-family:var(--mono);font-size:11.5px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:16px}
+
+/* HERO */
+section.hero{padding:clamp(56px,8vw,96px) 0 clamp(48px,6vw,80px);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+section.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(0,0,0,.04) 1px,transparent 0);background-size:24px 24px;mask-image:linear-gradient(180deg,transparent 0%,black 30%,black 70%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,black 30%,black 70%,transparent 100%);pointer-events:none;opacity:.7}
+.hero > .container{position:relative}
+.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(40px,5vw,72px);align-items:center}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr}}
+h1.hero-headline{font-size:clamp(36px,5.4vw,68px);line-height:1.0;letter-spacing:-0.035em;font-weight:500;margin-top:24px;color:var(--ink)}
+h1.hero-headline em{font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:-0.005em;font-size:1.06em;color:var(--accent)}
+.hero-sub{margin-top:28px;font-size:clamp(15.5px,1.3vw,18px);line-height:1.6;color:var(--ink-mute);max-width:540px}
+.hero-sub b{color:var(--ink);font-weight:500}
+.hero-ctas{margin-top:36px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hero-ctas .lockup-note{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-left:8px}
+
+/* HERO VISUAL — Two stacked compare panels */
+.compare-stack{display:flex;flex-direction:column;gap:14px;position:relative}
+.cmp-card{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.02),0 8px 24px -8px rgba(10,10,10,.08)}
+.cmp-card.them{opacity:.92}
+.cmp-card.us{position:relative}
+.cmp-head{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.cmp-card.us{background:var(--ink);color:white}
+.cmp-card.us .cmp-head{background:#000;color:white;border-bottom-color:rgba(255,255,255,.12)}
+.cmp-tag{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.cmp-card.them .cmp-tag{color:var(--ink-mute)}
+.cmp-card.us .cmp-tag{color:var(--accent)}
+.cmp-name{font-size:14px;font-weight:600;letter-spacing:-0.01em}
+.cmp-card.us .cmp-name{color:white}
+.cmp-body{padding:16px 20px}
+.cmp-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.cmp-row:first-child{border-top:none;padding-top:0}
+.cmp-row:last-child{padding-bottom:0}
+.cmp-key{color:var(--ink-mute)}
+.cmp-card.us .cmp-row{border-top-color:rgba(255,255,255,.08)}
+.cmp-card.us .cmp-key{color:rgba(255,255,255,.55)}
+.cmp-val{font-family:var(--mono);font-size:11.5px;font-weight:500}
+.cmp-val.no{color:var(--ink-faint)}
+.cmp-val.yes{color:var(--accent)}
+.cmp-card.us .cmp-val.yes{color:var(--accent)}
+.cmp-arrow{position:absolute;left:50%;top:calc(50% - 4px);transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:var(--accent);color:white;display:grid;place-items:center;font-size:18px;font-weight:600;box-shadow:0 4px 14px -2px rgba(255,77,31,.4);z-index:2;border:3px solid white}
+
+/* SECTION FOUNDATION */
+section.bay{padding:clamp(72px,9vw,120px) 0;border-bottom:1px solid var(--line);position:relative}
+section.bay.dark{background:var(--bg-dark);color:#fafafa;border-bottom:none}
+section.bay.soft{background:var(--bg-soft)}
+h2.section-title{font-size:clamp(30px,4.4vw,52px);line-height:1.04;letter-spacing:-0.03em;font-weight:500;max-width:880px}
+h2.section-title em{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.06em}
+.section-sub{margin-top:20px;font-size:clamp(15px,1.3vw,18px);color:var(--ink-mute);max-width:680px;line-height:1.55}
+section.dark .section-sub{color:rgba(250,250,250,.65)}
+section.dark .section-eyebrow{color:var(--accent)}
+
+/* SALES NAV STRENGTHS — 4 cards */
+.strength-grid{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+@media (max-width:980px){.strength-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.strength-grid{grid-template-columns:1fr}}
+.strength-card{background:var(--bg);padding:32px 28px;display:flex;flex-direction:column;gap:14px}
+.strength-icon{width:38px;height:38px;border-radius:9px;background:var(--bg-card);display:grid;place-items:center;color:var(--ink);margin-bottom:6px}
+.strength-num{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+.strength-name{font-size:18px;font-weight:500;letter-spacing:-0.018em;line-height:1.2}
+.strength-name em{font-family:var(--serif);font-style:italic;font-weight:400}
+.strength-desc{font-size:13.5px;color:var(--ink-mute);line-height:1.55}
+
+.strength-foot{margin-top:40px;text-align:center;font-size:clamp(18px,2.2vw,26px);font-weight:400;color:var(--ink);letter-spacing:-0.02em;line-height:1.35;max-width:760px;margin-left:auto;margin-right:auto}
+.strength-foot em{font-family:var(--serif);font-style:italic;color:var(--accent);font-size:1.04em}
+.strength-foot b{font-weight:500}
+
+/* DIFFERENTIATORS — 4 deep sections */
+.diff-stack{margin-top:56px;display:flex;flex-direction:column;gap:0}
+.diff{padding:clamp(40px,6vw,64px) 0;border-top:1px solid rgba(250,250,250,.1);display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(40px,6vw,72px);align-items:center}
+.diff:last-child{border-bottom:1px solid rgba(250,250,250,.1)}
+@media (max-width:880px){.diff{grid-template-columns:1fr;gap:32px}}
+.diff-text .num{font-family:var(--mono);font-size:11.5px;color:rgba(250,250,250,.4);letter-spacing:.08em;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.diff-text .num::before{content:"";width:32px;height:1px;background:var(--accent)}
+.diff-text h3{font-size:clamp(26px,3.2vw,38px);font-weight:500;letter-spacing:-0.025em;line-height:1.08;color:white;margin-bottom:18px}
+.diff-text h3 em{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.05em}
+.diff-text h3 .ac{color:var(--accent)}
+.diff-text p{font-size:15.5px;color:rgba(250,250,250,.7);line-height:1.6;max-width:46ch}
+.diff-text p b{color:white;font-weight:500}
+.diff-text p em{font-family:var(--serif);font-style:italic;color:white;font-size:1.04em}
+
+/* DIFF VISUAL — flexible canvas */
+.diff-visual{position:relative}
+
+/* Memory log mockup */
+.memlog{background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:12px}
+.memlog-head{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.03)}
+.memlog-head .title{color:rgba(255,255,255,.85);font-weight:500;letter-spacing:.02em}
+.memlog-head .who{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.memlog-body{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.memlog-row{display:grid;grid-template-columns:80px 1fr;gap:14px;align-items:start;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.memlog-row:first-child{padding-top:0;border-top:none}
+.memlog-date{color:rgba(255,255,255,.45);font-size:10.5px;letter-spacing:.04em;padding-top:1px}
+.memlog-event{color:rgba(255,255,255,.85);font-size:12px;line-height:1.55}
+.memlog-event b{color:white;font-weight:500}
+.memlog-event .arrow{color:rgba(255,255,255,.4);margin:0 5px}
+.memlog-event .ac{color:var(--accent)}
+.memlog-event .blocked{display:inline-block;background:rgba(255,77,31,.18);color:var(--accent);padding:1px 7px;border-radius:100px;font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px;font-weight:500;border:1px solid rgba(255,77,31,.3)}
+.memlog-event .ok{display:inline-block;background:rgba(0,184,107,.15);color:var(--green);padding:1px 7px;border-radius:100px;font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px;font-weight:500;border:1px solid rgba(0,184,107,.3)}
+.memlog-meta{color:rgba(255,255,255,.45);font-size:11px;margin-top:4px;line-height:1.5}
+
+/* Buyer context card */
+.bcard{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;color:var(--ink-2)}
+.bcard-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+.bcard-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#ffb088,#ff6e3f);color:white;display:grid;place-items:center;font-weight:600;font-size:16px;letter-spacing:-0.01em;flex-shrink:0}
+.bcard-name{font-size:16px;font-weight:600;letter-spacing:-0.015em;color:var(--ink)}
+.bcard-role{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.bcard-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px;font-size:13px}
+.bctx{display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:baseline}
+.bctx-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-weight:500}
+.bctx-val{color:var(--ink-2);line-height:1.5}
+.bctx-val b{color:var(--ink);font-weight:500}
+.bctx-val .ac{color:var(--accent);font-weight:500}
+.bcard-rec{margin:14px -22px -18px;padding:14px 22px;background:var(--accent-soft);border-top:1px solid rgba(255,77,31,.18);font-size:13px;color:var(--ink);line-height:1.55}
+.bcard-rec .label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:500;margin-bottom:4px;display:block}
+.bcard-rec b{font-weight:500}
+
+/* 4 super-connectors visual */
+.sc-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+.sc-side{background:#1a1a1a;padding:24px}
+.sc-side.us{background:#202020}
+.sc-side-tag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:14px;font-weight:500}
+.sc-side.us .sc-side-tag{color:var(--accent)}
+.sc-list{display:flex;flex-direction:column;gap:8px}
+.sc-tile{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;font-size:12.5px;color:rgba(255,255,255,.85);font-weight:400}
+.sc-tile.active{background:rgba(255,77,31,.1);border-color:rgba(255,77,31,.3);color:white}
+.sc-tile.active .sc-dot{background:var(--accent)}
+.sc-tile .sc-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.sc-tile.dim{opacity:.35}
+.sc-side .sc-cap{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.4);margin-top:14px;text-align:right}
+.sc-side.us .sc-cap{color:var(--accent)}
+
+/* Does the work — chat */
+.dwchat{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;color:var(--ink-2)}
+.dwchat-msg{display:flex;gap:10px;align-items:flex-start}
+.dwchat-avatar{width:28px;height:28px;border-radius:7px;color:white;font-weight:600;font-size:11.5px;display:grid;place-items:center;flex-shrink:0}
+.dwchat-avatar.rudy{background:var(--accent)}
+.dwchat-avatar.user{background:var(--blue)}
+.dwchat-body{flex:1;min-width:0}
+.dwchat-name{display:flex;align-items:baseline;gap:6px;font-weight:600;margin-bottom:3px;font-size:12.5px;color:var(--ink)}
+.dwchat-name .tag{font-size:9.5px;padding:1px 5px;border-radius:3px;background:var(--accent-soft);color:var(--accent);font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.dwchat-text{font-size:13px;line-height:1.5;color:var(--ink-2)}
+.dwchat-text b{color:var(--ink);font-weight:500}
+.dwchat-text .hl{background:linear-gradient(180deg,transparent 60%,var(--accent-soft) 60%);padding:0 2px}
+.dwchat-card{margin-top:8px;padding:10px 12px;background:var(--bg-soft);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;font-size:12px;color:var(--ink-2);line-height:1.55}
+.dwchat-card .label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:4px;display:block}
+
+/* PAYOFF */
+section.payoff{padding:clamp(80px,10vw,140px) 0;border-bottom:1px solid var(--line);text-align:center}
+.payoff-h{font-size:clamp(38px,5.6vw,72px);line-height:1;letter-spacing:-0.035em;font-weight:500;max-width:18ch;margin:24px auto 32px}
+.payoff-h em{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.04em;color:var(--accent)}
+.payoff-sub{font-size:clamp(16px,1.4vw,18px);color:var(--ink-mute);max-width:640px;margin:0 auto 64px;line-height:1.6}
+.payoff-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;max-width:880px;margin:0 auto}
+@media (max-width:640px){.payoff-stats{grid-template-columns:1fr}}
+.payoff-stat{background:var(--bg);padding:48px 40px}
+.payoff-stat-num{font-size:clamp(56px,8vw,96px);font-weight:500;letter-spacing:-0.04em;line-height:1;color:var(--ink);margin-bottom:14px}
+.payoff-stat-num em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent)}
+.payoff-stat-label{font-size:14.5px;color:var(--ink-mute);line-height:1.5;max-width:32ch;margin:0 auto}
+.payoff-stat-label b{color:var(--ink);font-weight:500}
+
+/* COMPARISON TABLE */
+section.table-section{padding:clamp(72px,9vw,120px) 0;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.table-wrap{margin-top:56px;background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.02),0 24px 60px -28px rgba(10,10,10,.1)}
+.table-head{display:grid;grid-template-columns:1.6fr 1fr 1fr;background:var(--ink);color:white}
+.table-head .th{padding:22px 24px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;border-left:1px solid rgba(255,255,255,.08)}
+.table-head .th:first-child{border-left:none;color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.table-head .th-name{font-size:15px;font-weight:600;letter-spacing:-0.01em}
+.table-head .th-name em{font-family:var(--serif);font-style:italic;font-weight:400}
+.table-head .th-tag{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);font-weight:500}
+.table-head .th.us .th-tag{color:var(--accent)}
+.table-row{display:grid;grid-template-columns:1.6fr 1fr 1fr;border-top:1px solid var(--line)}
+.table-cell{padding:18px 24px;font-size:13.5px;line-height:1.5;border-left:1px solid var(--line);display:flex;align-items:center}
+.table-cell:first-child{border-left:none;color:var(--ink-2);font-weight:500}
+.table-cell.them{color:var(--ink-mute)}
+.table-cell.us{color:var(--ink-2)}
+.table-cell.us b{color:var(--ink);font-weight:500}
+.table-cell .icon-yes{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-weight:500}
+.table-cell .icon-no{display:inline-flex;align-items:center;gap:8px;color:var(--ink-faint)}
+.icon-yes::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--green);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M6.5 11.2L3.3 8l1.1-1.1 2.1 2.1 4.1-4.1L11.7 6z'/></svg>");background-size:contain;flex-shrink:0}
+.icon-no::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--line-strong);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M11.3 4.7L8 8l3.3 3.3-1 1L7 9l-3.3 3.3-1-1L6 8 2.7 4.7l1-1L7 7l3.3-3.3z'/></svg>");background-size:contain;flex-shrink:0}
+.table-cell .qual{font-size:11.5px;color:var(--ink-faint);font-family:var(--mono);margin-left:26px;display:block;margin-top:3px;line-height:1.4}
+.table-row.alt{background:var(--bg-soft)}
+@media (max-width:720px){
+  .table-head,.table-row{grid-template-columns:1fr}
+  .table-head .th:first-child{display:none}
+  .table-cell{border-left:none;border-top:1px solid var(--line)}
+  .table-cell:first-child{background:var(--bg-soft);font-weight:600;border-top:1px solid var(--line)}
+  .table-cell:first-child::before{content:"";display:block}
+  .table-cell.them::before{content:"Sales Nav: ";font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em;margin-right:8px}
+  .table-cell.us::before{content:"Boomerang: ";font-family:var(--mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-right:8px}
+}
+
+/* FINAL CTA */
+.final-cta{text-align:center;padding:clamp(80px,10vw,140px) 0;border-top:1px solid var(--line);background:var(--bg);position:relative;overflow:hidden}
+.final-cta::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,var(--line-strong) 1px,transparent 0);background-size:28px 28px;opacity:.3;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);pointer-events:none}
+.final-cta-inner{position:relative}
+.final-h{font-size:clamp(36px,5.6vw,72px);line-height:1;letter-spacing:-0.035em;font-weight:500;max-width:900px;margin:0 auto 24px}
+.final-h em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent)}
+.final-sub{font-size:18px;color:var(--ink-mute);max-width:580px;margin:0 auto 36px;line-height:1.5}
+.final-ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+/* FOOTER */
+footer.site{padding:64px 0 40px;background:var(--bg-dark);color:rgba(250,250,250,.7)}
+footer.site a:hover{color:white}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:56px}
+@media (max-width:880px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px 24px}}
+.footer-brand .logo{color:white;margin-bottom:16px}
+.footer-brand p{font-size:13px;color:rgba(250,250,250,.55);line-height:1.5;max-width:280px;margin-bottom:20px}
+.footer-col h5{font-family:var(--mono);font-size:11px;color:rgba(250,250,250,.45);text-transform:uppercase;letter-spacing:.08em;font-weight:500;margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:13.5px}
+.footer-bottom{border-top:1px solid rgba(250,250,250,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(250,250,250,.45);flex-wrap:wrap;gap:16px}
+.footer-bottom .legal{display:flex;gap:18px}
+</style>
+</head>
+<body>
+
+<!-- ============= NAV ============= -->
+<nav class="top">
+  <div class="container row">
+    <a href="/" class="logo">
+      <img src="webflow-bundle/assets/brand/boomerang-logo.png" alt="Boomerang AI" class="brand-logo">
+    </a>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-boomerang">Why Boomerang</a></li>
+      <li><a href="/customers">Customers</a></li>
+      <li><a href="/webinars">Webinars</a></li>
+      <li><a href="/about-us">About</a></li>
+    </ul>
+    <div class="cta-row">
+      <a href="/" class="btn btn-ghost">Sign in</a>
+      <a href="#cta" class="btn btn-primary">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============= HERO ============= -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="pulse"></span>BOOMERANG VS. SALES NAVIGATOR</span>
+        <h1 class="hero-headline">Sales Navigator is a <em>database.</em><br>Boomerang is an <em>agent.</em></h1>
+        <p class="hero-sub">Sales Nav is exhaustive — probably the most complete dataset of professional contacts that exists. <b>Use it for what it's great at.</b> Use Boomerang for everything that has to happen <em>after</em> the contact is found.</p>
+        <div class="hero-ctas">
+          <a href="#cta" class="btn btn-primary btn-lg">Book a demo →</a>
+          <a href="#table" class="btn btn-outline btn-lg">See full comparison</a>
+        </div>
+      </div>
+
+      <div class="compare-stack">
+        <div class="cmp-card them">
+          <div class="cmp-head">
+            <span class="cmp-name">Sales Navigator</span>
+            <span class="cmp-tag">DATABASE</span>
+          </div>
+          <div class="cmp-body">
+            <div class="cmp-row"><span class="cmp-key">Contact discovery</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Filter by title, geo, signals</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Remembers prior asks</span><span class="cmp-val no">NO</span></div>
+            <div class="cmp-row"><span class="cmp-key">Drafts the intro request</span><span class="cmp-val no">NO</span></div>
+            <div class="cmp-row"><span class="cmp-key">Picks the moment to ask</span><span class="cmp-val no">NO</span></div>
+          </div>
+        </div>
+
+        <div class="cmp-arrow">→</div>
+
+        <div class="cmp-card us">
+          <div class="cmp-head">
+            <span class="cmp-name">Boomerang</span>
+            <span class="cmp-tag">AGENT</span>
+          </div>
+          <div class="cmp-body">
+            <div class="cmp-row"><span class="cmp-key">Contact discovery</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Filter by title, geo, signals</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Remembers prior asks</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Drafts the intro request</span><span class="cmp-val yes">YES</span></div>
+            <div class="cmp-row"><span class="cmp-key">Picks the moment to ask</span><span class="cmp-val yes">YES</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= STRENGTHS ============= -->
+<section class="bay">
+  <div class="container">
+    <div class="section-eyebrow">What Sales Nav is great at</div>
+    <h2 class="section-title">Let's start with the <em>obvious</em>.</h2>
+    <p class="section-sub">Sales Navigator is genuinely excellent at a few things. Most of our customers keep using it for these — and so should you. Boomerang isn't trying to replace any of them.</p>
+
+    <div class="strength-grid">
+      <div class="strength-card">
+        <div class="strength-num">01</div>
+        <div class="strength-name">The widest <em>contact graph</em> on earth</div>
+        <p class="strength-desc">LinkedIn's professional dataset is exhaustive — probably more complete than anything else available. For raw discovery of who exists at what title where, it's unmatched.</p>
+      </div>
+      <div class="strength-card">
+        <div class="strength-num">02</div>
+        <div class="strength-name"><em>InMail</em> at scale</div>
+        <p class="strength-desc">When you need to reach people you have zero relationship with, InMail is one of the few channels that still cuts through. Direct messaging, on the network they actually check.</p>
+      </div>
+      <div class="strength-card">
+        <div class="strength-num">03</div>
+        <div class="strength-name"><em>Filtering</em> the full database</div>
+        <p class="strength-desc">Title, industry, geography, headcount, seniority, intent signals. Sales Nav's filter logic on top of LinkedIn data is hard to beat for net-new prospect lists.</p>
+      </div>
+      <div class="strength-card">
+        <div class="strength-num">04</div>
+        <div class="strength-name">TeamLink for <em>your reps' networks</em></div>
+        <p class="strength-desc">Surfaces shared connections between your reps and a target buyer. Useful for the most basic intro path — though it stops where TeamLink's data ends.</p>
+      </div>
+    </div>
+
+    <p class="strength-foot">Keep Sales Nav for these. <em>Use Boomerang for everything else.</em></p>
+  </div>
+</section>
+
+<!-- ============= DIFFERENTIATORS ============= -->
+<section class="bay dark">
+  <div class="container">
+    <div class="section-eyebrow">What an agent does that a database can't</div>
+    <h2 class="section-title" style="color:white">A database <em>surfaces</em>. An agent <em>acts.</em></h2>
+    <p class="section-sub">Four things Boomerang does — by design — that Sales Nav was never built to do. Each one is the difference between a list of contacts and pipeline.</p>
+
+    <div class="diff-stack">
+      <!-- DIFF 01 — MEMORY -->
+      <div class="diff">
+        <div class="diff-text">
+          <div class="num">01 / Memory</div>
+          <h3>The agent <em>remembers.</em> The database doesn't.</h3>
+          <p>Boomerang remembers every intro request that's ever been made — across reps, across account changes, across years. So the new rep covering the account doesn't ask Diane for the same intro the old rep asked her for two months ago. <b>It also remembers every super-connector's preferences</b> — who they will and won't intro, when, and how — and enforces them automatically.</p>
+        </div>
+        <div class="diff-visual">
+          <div class="memlog">
+            <div class="memlog-head">
+              <span class="title">INTRO REQUEST LOG</span>
+              <span class="who">Diane Patterson · Connector</span>
+            </div>
+            <div class="memlog-body">
+              <div class="memlog-row">
+                <div class="memlog-date">MAR 12<br>2024</div>
+                <div class="memlog-event"><span class="ok">Closed-won</span><b>Sarah</b> <span class="arrow">→</span> Diane <span class="arrow">→</span> Stripe<div class="memlog-meta">Owner: Sahil P. · $240K · "Diane intro'd within 48hr"</div></div>
+              </div>
+              <div class="memlog-row">
+                <div class="memlog-date">AUG 04<br>2024</div>
+                <div class="memlog-event"><span class="blocked">Blocked</span><b>Sarah</b> <span class="arrow">→</span> Diane <span class="arrow">→</span> Stripe<div class="memlog-meta">Already asked 5mo ago. Same target. Skipped.</div></div>
+              </div>
+              <div class="memlog-row">
+                <div class="memlog-date">SEP 01<br>2024</div>
+                <div class="memlog-event"><span class="ok">In progress</span><b>Mike</b> (new rep) <span class="arrow">→</span> Diane <span class="arrow">→</span> <span class="ac">Notion</span><div class="memlog-meta">Different target. Diane's preference: warm only. Drafted.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIFF 02 — BUYER CONTEXT -->
+      <div class="diff">
+        <div class="diff-visual">
+          <div class="bcard">
+            <div class="bcard-head">
+              <div class="bcard-avatar">SC</div>
+              <div>
+                <div class="bcard-name">Sarah Chen</div>
+                <div class="bcard-role">VP Marketing · Stripe · Joined 6 days ago</div>
+              </div>
+            </div>
+            <div class="bcard-body">
+              <div class="bctx">
+                <div class="bctx-label">Was</div>
+                <div class="bctx-val"><b>VP Marketing at Acme Corp</b> · 2021–2024</div>
+              </div>
+              <div class="bctx-label" style="display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-weight:500">— And —</div>
+              <div class="bctx">
+                <div class="bctx-label">Role in deal</div>
+                <div class="bctx-val"><span class="ac">Primary economic buyer</span> · 2023 cycle</div>
+              </div>
+              <div class="bctx">
+                <div class="bctx-label">Closed by</div>
+                <div class="bctx-val">Sahil P. · $180K ARR</div>
+              </div>
+              <div class="bctx">
+                <div class="bctx-label">Met with</div>
+                <div class="bctx-val">Sahil P., Mike R., John T. (exec sponsor)</div>
+              </div>
+              <div class="bctx">
+                <div class="bctx-label">Last touch</div>
+                <div class="bctx-val">Mar 14, 2024 · QBR with Sahil</div>
+              </div>
+            </div>
+            <div class="bcard-rec">
+              <span class="label">Recommended ask</span>
+              <b>Sahil → Sarah.</b> "Hey Sarah, congrats on Stripe. Wanted to share what we've shipped since you championed us at Acme..."
+            </div>
+          </div>
+        </div>
+        <div class="diff-text">
+          <div class="num">02 / Buyer Context</div>
+          <h3>Job changes are <em>noise</em> without context.</h3>
+          <p>Sales Nav can tell you Sarah moved to Stripe. Boomerang tells you Sarah moved to Stripe, <b>she was your primary economic buyer</b> in the 2023 deal, here's who from your team she worked with, and here's where the conversation last left off. <em>That's the difference between an alert and a play.</em></p>
+        </div>
+      </div>
+
+      <!-- DIFF 03 — 4 SUPER CONNECTORS -->
+      <div class="diff">
+        <div class="diff-text">
+          <div class="num">03 / Connector Coverage</div>
+          <h3>Four <em>super-connectors</em>. Not one.</h3>
+          <p>Sales Nav (via TeamLink) sees one source: <b>your reps' own networks.</b> The warmest paths usually live in the other three — your <span class="ac">customers</span>, your <span class="ac">board / investors / advisors</span>, and your <span class="ac">partners.</span> Boomerang reasons across all four. Most enterprise teams find 3–5x more warm paths the moment we turn it on.</p>
+        </div>
+        <div class="diff-visual">
+          <div class="sc-compare">
+            <div class="sc-side them">
+              <div class="sc-side-tag">SALES NAV (via TeamLink)</div>
+              <div class="sc-list">
+                <div class="sc-tile active"><span class="sc-dot"></span>Reps' own networks</div>
+                <div class="sc-tile dim"><span class="sc-dot"></span>Customer champions</div>
+                <div class="sc-tile dim"><span class="sc-dot"></span>Board / Investors / Advisors</div>
+                <div class="sc-tile dim"><span class="sc-dot"></span>Partners</div>
+              </div>
+              <div class="sc-cap">1 source</div>
+            </div>
+            <div class="sc-side us">
+              <div class="sc-side-tag">BOOMERANG</div>
+              <div class="sc-list">
+                <div class="sc-tile active"><span class="sc-dot"></span>Reps' own networks</div>
+                <div class="sc-tile active"><span class="sc-dot"></span>Customer champions</div>
+                <div class="sc-tile active"><span class="sc-dot"></span>Board / Investors / Advisors</div>
+                <div class="sc-tile active"><span class="sc-dot"></span>Partners</div>
+              </div>
+              <div class="sc-cap">4 sources</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIFF 04 — DOES THE WORK -->
+      <div class="diff">
+        <div class="diff-visual">
+          <div class="dwchat">
+            <div class="dwchat-msg">
+              <div class="dwchat-avatar rudy">R</div>
+              <div class="dwchat-body">
+                <div class="dwchat-name">Rudy <span class="tag">AGENT</span></div>
+                <div class="dwchat-text">I noticed <b>Sarah Chen</b> joined Stripe last week. She was your primary buyer at Acme — closed by you, $180K. <span class="hl">Want me to draft an intro request to Diane?</span></div>
+              </div>
+            </div>
+            <div class="dwchat-msg">
+              <div class="dwchat-avatar user">S</div>
+              <div class="dwchat-body">
+                <div class="dwchat-name">Sahil</div>
+                <div class="dwchat-text">Yes — go.</div>
+              </div>
+            </div>
+            <div class="dwchat-msg">
+              <div class="dwchat-avatar rudy">R</div>
+              <div class="dwchat-body">
+                <div class="dwchat-name">Rudy <span class="tag">AGENT</span></div>
+                <div class="dwchat-text">Drafted. Recommend sending <b>Tuesday 9:15am ET</b> — Diane responds 3x more in mornings.</div>
+                <div class="dwchat-card">
+                  <span class="label">DRAFT · For your review</span>
+                  Hi Diane — Sarah Chen just joined Stripe as VP Marketing. She championed us at Acme last year (great experience). Would you be willing to make a warm intro?
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="diff-text">
+          <div class="num">04 / Does The Work</div>
+          <h3>The agent <em>does</em> the work. The database makes you do it.</h3>
+          <p>Sales Nav surfaces a contact. <b>The rep still has to figure out who can intro, draft the ask, pick the moment, follow up.</b> That's where 95% of warm intros die — not at the discovery step. Boomerang reasons across both sides, drafts the request, picks the moment, and consolidates everything into a checklist your connectors can actually execute against.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============= PAYOFF ============= -->
+<section class="payoff">
+  <div class="container">
+    <div class="section-eyebrow" style="color:var(--accent)">The commercial case</div>
+    <h2 class="payoff-h">Cut <em>50–75%</em> of Sales Nav licenses.<br>5x your warm-intro <em>throughput.</em></h2>
+    <p class="payoff-sub">Most enterprises run ~200 Sales Nav licenses across the GTM org. With Boomerang, teams typically keep ~50 power users on Sales Nav for prospecting and InMail — and the rest of the team operates out of Boomerang and the CRM.</p>
+
+    <div class="payoff-stats">
+      <div class="payoff-stat">
+        <div class="payoff-stat-num">50–75<em>%</em></div>
+        <div class="payoff-stat-label"><b>Reduction in Sales Nav licenses & overall spend.</b> Most GTM users don't need a full Sales Nav seat once Boomerang is in place.</div>
+      </div>
+      <div class="payoff-stat">
+        <div class="payoff-stat-num">5–8<em>x</em></div>
+        <div class="payoff-stat-label"><b>Warm-intro throughput in 3–6 months.</b> From "we don't even measure this" to a real, attributable revenue channel.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= COMPARISON TABLE ============= -->
+<section class="table-section" id="table">
+  <div class="container">
+    <div class="section-eyebrow">Side by side</div>
+    <h2 class="section-title">The <em>full comparison</em>.</h2>
+    <p class="section-sub">Eleven questions a buyer should actually ask. Honest answers on both sides.</p>
+
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="th"><span>Buyer question</span></div>
+        <div class="th them">
+          <div>
+            <div class="th-name">Sales Navigator</div>
+            <div class="th-tag">Database</div>
+          </div>
+        </div>
+        <div class="th us">
+          <div>
+            <div class="th-name">Boomerang</div>
+            <div class="th-tag">Agent</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Where does the contact data come from?</div>
+        <div class="table-cell them">LinkedIn only</div>
+        <div class="table-cell us"><b>LinkedIn + CRM + product + public sources</b></div>
+      </div>
+
+      <div class="table-row alt">
+        <div class="table-cell">Remembers prior intro requests across reps?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Honors each connector's preferences automatically?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row alt">
+        <div class="table-cell">Surfaces buyer history (deals, engagement, who met whom)?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Covers customer champions as connectors?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row alt">
+        <div class="table-cell">Covers board / investors / advisors as connectors?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Covers partners as connectors?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row alt">
+        <div class="table-cell">Drafts the actual intro request?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Picks the right moment to ask?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row alt">
+        <div class="table-cell">Follows up automatically?</div>
+        <div class="table-cell them"><span class="icon-no">No</span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes</span></div>
+      </div>
+
+      <div class="table-row">
+        <div class="table-cell">Consolidates intro requests for the connector into a checklist?</div>
+        <div class="table-cell them"><span class="icon-no">No<span class="qual">Manual outreach or Excel spreadsheets</span></span></div>
+        <div class="table-cell us"><span class="icon-yes">Yes<span class="qual">One checklist per connector, executable in-app</span></span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============= FINAL CTA ============= -->
+<section class="final-cta" id="cta">
+  <div class="container final-cta-inner">
+    <div class="section-eyebrow" style="margin-bottom:24px">Ready when you are</div>
+    <h2 class="final-h">See what an <em>agent</em><br>actually does.</h2>
+    <p class="final-sub">A 30-minute demo using a sample of your network and CRM. We'll show you exactly how many warm paths exist into your top 50 target accounts — and what it would take to activate them.</p>
+    <div class="final-ctas">
+      <a href="#" class="btn btn-primary btn-xl">Book a demo →</a>
+      <a href="/why-boomerang" class="btn btn-outline btn-xl">Why Boomerang</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FOOTER ============= -->
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <img src="webflow-bundle/assets/brand/boomerang-logo-white.png" alt="Boomerang AI" class="brand-logo">
+        </a>
+        <p>The first AI agent for warm introductions. End to end.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Site</h5>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/why-boomerang">Why Boomerang</a></li>
+          <li><a href="/customers">Customers</a></li>
+          <li><a href="/about-us">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Comparison</h5>
+        <ul>
+          <li><a href="/boomerang-vs-salesnav">vs. Sales Navigator</a></li>
+          <li><a href="/boomerang-vs-zoominfo">vs. ZoomInfo</a></li>
+          <li><a href="/boomerang-vs-usergems">vs. UserGems</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="https://www.getboomerang.ai/blog">Blog</a></li>
+          <li><a href="https://www.getboomerang.ai/glossary">Glossary</a></li>
+          <li><a href="https://www.getboomerang.ai/security">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Boomerang AI. All rights reserved.</span>
+      <div class="legal">
+        <a href="https://www.getboomerang.ai/terms-of-service">Terms</a>
+        <a href="https://www.getboomerang.ai/privacy-notice">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
